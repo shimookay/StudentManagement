@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>受講生一覧</title>
+</head>
+<body>
+<h1>受講生一覧</h1>
+<table border="1">
+  <thead>
+  <tr>
+    <th>studentId</th>
+    <th>name</th>
+    <th>ruby</th>
+    <th>nickname</th>
+    <th>email</th>
+    <th>address</th>
+    <th>phone</th>
+    <th>age</th>
+    <th>gender</th>
+    <th>remark</th>
+    <th>isDeleted</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="studentDetail : ${studentList}">
+    <td th:text="${studentDetail.student.studentId}">s001</td>
+    <td th:text="${studentDetail.student.name}">EnamiKouji</td>
+    <td th:text="${studentDetail.student.ruby}">えなみ　こうじ</td>
+    <td th:text="${studentDetail.student.nickname}">えなみ</td>
+    <td th:text="${studentDetail.student.email}">enami@email.com</td>
+    <td th:text="${studentDetail.student.address}">大阪府</td>
+    <td th:text="${studentDetail.student.phone}">07012345678</td>
+    <td th:text="${studentDetail.student.age}">37</td>
+    <td th:text="${studentDetail.student.gender}">male</td>
+    <td th:text="${studentDetail.student.remark}">会社員</td>
+    <td th:text="${studentDetail.student.isDeleted}">NULL</td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
