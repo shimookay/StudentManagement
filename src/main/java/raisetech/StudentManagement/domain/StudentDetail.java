@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourses;
-import raisetech.StudentManagement.data.StudentCourses;
-import raisetech.StudentManagement.data.StudentCourses;
 
 @Getter
 @Setter

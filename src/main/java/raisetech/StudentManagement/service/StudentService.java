@@ -46,4 +46,8 @@ public class StudentService {
 //    // 抽出したリストをコントローラへ返す
 //    return filteredStudentCoursesList;
   }
+
+  public void registerStudent(Student student) {
+    repository.registerStudent(student);
+  }
 }
