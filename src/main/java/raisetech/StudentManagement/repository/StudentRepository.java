@@ -2,10 +2,12 @@ package raisetech.StudentManagement.repository;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Insert;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourses;
+import raisetech.StudentManagement.domain.StudentDetail;
 
 /**
  * 受講生情報を扱うリポジトリ。
@@ -28,9 +30,16 @@ public interface StudentRepository {
 
   @Insert("""
     INSERT INTO students
-    (student_id, name, ruby, nickname, email, address, phone, age, gender, remark, is_deleted)
+    (name, ruby, nickname, email, address, phone, age, gender, remark, is_deleted)
     VALUES
-    (#{studentId}, #{name}, #{ruby}, #{nickname}, #{email}, #{address}, #{phone}, #{age}, #{gender}, #{remark}, #{isDeleted})
+    (#{name}, #{ruby}, #{nickname}, #{email}, #{address}, #{phone}, #{age}, #{gender}, #{remark}, false)
     """)
+    // student_id, #{studentId}, を削除
+  @Options(useGeneratedKeys = true, keyProperty = "studentId")
   void registerStudent(Student student);
+
+  @Insert("INSERT INTO students_courses(student_id, course_name, start_date, end_date) "
+      + "VALUES(#{studentId}, #{courseName}, #{startDate}, #{endDate})")
+  @Options(useGeneratedKeys = true, keyProperty = "courseId")
+  void registerStudentsCourses(StudentCourses studentsCourses);
 }
