@@ -1,8 +1,7 @@
 package raisetech.StudentManagement.controller;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 import raisetech.StudentManagement.controller.converter.StudentConverter;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourses;
@@ -49,7 +47,9 @@ public class StudentController {
 
   @GetMapping("/newStudent")
   public String newStudent(Model model) {
-    model.addAttribute("studentDetail", new StudentDetail());
+    StudentDetail studentDetail = new StudentDetail();
+    studentDetail.setStudentsCourses(Arrays.asList(new StudentCourses()));
+    model.addAttribute("studentDetail", studentDetail);
     return "registerStudent";
   }
 
@@ -60,12 +60,11 @@ public class StudentController {
     }
     // System.out.println(studentDetail.getStudent().getName() + "さんが新規受講生として登録されました。");
 
+    service.registerStudent(studentDetail);
     // ①新規受講生情報を登録する処理を実装する。
     // 　→ 登録された受講生情報が、結果としてstudentListとして検索画面に出てくるように実装する。
-    service.registerStudent(studentDetail.getStudent());
-
     // ②コース情報も一緒に登録できるように実装する。登録するコース情報は１つで良い。
 
-    return "redirect:/studentList";
+        return "redirect:/studentList";
   }
 }

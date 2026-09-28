@@ -1,10 +1,13 @@
 package raisetech.StudentManagement.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourses;
+import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.repository.StudentRepository;
 
 @Service
@@ -47,7 +50,15 @@ public class StudentService {
 //    return filteredStudentCoursesList;
   }
 
-  public void registerStudent(Student student) {
-    repository.registerStudent(student);
+  @Transactional  // @Transactional の位置に注意！！！
+  public void registerStudent(StudentDetail studentDetail) {
+    repository.registerStudent(studentDetail.getStudent());
+    // → TODO: ここへコース情報登録を行う。
+    for (StudentCourses studentsCourses : studentDetail.getStudentsCourses()) {
+      studentsCourses.setStudentId(studentDetail.getStudent().getStudentId());
+      studentsCourses.setStartDate(LocalDateTime.now());
+      studentsCourses.setEndDate(LocalDateTime.now().plusYears(1));
+      repository.registerStudentsCourses(studentsCourses);
+    }
   }
 }
