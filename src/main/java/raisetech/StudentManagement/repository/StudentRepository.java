@@ -5,9 +5,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Update;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourses;
-import raisetech.StudentManagement.domain.StudentDetail;
 
 /**
  * 受講生情報を扱うリポジトリ。
@@ -25,8 +25,14 @@ public interface StudentRepository {
   @Select("SELECT * FROM students")
   List<Student> search();
 
+  @Select("SELECT * FROM students WHERE student_id=#{studentId}")
+  Student searchStudent(String studentId);
+
   @Select("SELECT * FROM students_courses")
-  List<StudentCourses> searchStudentCourses();
+  List<StudentCourses> searchStudentsCoursesList();
+
+  @Select("SELECT * FROM students_courses WHERE student_id=#{studentId}")
+  List<StudentCourses> searchStudentsCourses(String studentId);
 
   @Insert("""
     INSERT INTO students
@@ -42,4 +48,14 @@ public interface StudentRepository {
       + "VALUES(#{studentId}, #{courseName}, #{startDate}, #{endDate})")
   @Options(useGeneratedKeys = true, keyProperty = "courseId")
   void registerStudentsCourses(StudentCourses studentsCourses);
+
+
+  @Update(
+      "UPDATE students SET name=#{name}, ruby=#{ruby}, nickname=#{nickname}, email=#{email}, address=#{address}, "
+          + "phone=#{phone}, age=#{age}, gender=#{gender}, remark=#{remark}, is_deleted=#{isDeleted} WHERE student_id=#{studentId}")
+  void updateStudent(Student student);
+
+  @Update("UPDATE students_courses SET course_name=#{courseName} WHERE course_id=#{courseId}")
+  void updateStudentsCourses(StudentCourses studentsCourses);
+
 }
