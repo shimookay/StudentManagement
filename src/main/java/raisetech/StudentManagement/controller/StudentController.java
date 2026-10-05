@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import raisetech.StudentManagement.controller.converter.StudentConverter;
 import raisetech.StudentManagement.data.Student;
@@ -31,7 +32,7 @@ public class StudentController {
   public String getStudentList(Model model) {
     // リクエストの加工処理、入力チェック等
     List<Student> students = service.searchStudentList();
-    List<StudentCourses> studentCourses = service.searchStudentCoursesList();
+    List<StudentCourses> studentCourses = service.searchStudentsCoursesList();
 
     // テンプレートエンジンの中に書かれている変数(?)の名前
     model.addAttribute("studentList", converter.convertStudentDetails(students, studentCourses));
@@ -39,11 +40,14 @@ public class StudentController {
     return "studentList";
   }
 
-  @GetMapping("/studentCoursesList")
-  public List<StudentCourses> getStudentCoursesList() {
-    // リクエストの加工処理、入力チェック等
-    return service.searchStudentCoursesList();
+
+  @GetMapping("/student/{studentId}")
+  public String getStudent(@PathVariable String studentId, Model model) {
+    StudentDetail studentDetail = service.searchStudent(studentId);
+    model.addAttribute("studentDetail", studentDetail);
+    return "updateStudent";
   }
+
 
   @GetMapping("/newStudent")
   public String newStudent(Model model) {
@@ -65,6 +69,21 @@ public class StudentController {
     // 　→ 登録された受講生情報が、結果としてstudentListとして検索画面に出てくるように実装する。
     // ②コース情報も一緒に登録できるように実装する。登録するコース情報は１つで良い。
 
-        return "redirect:/studentList";
+    return "redirect:/studentList";
+  }
+
+
+  @PostMapping("/updateStudent")
+  public String updateStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
+    if(result.hasErrors()) {
+      return "updateStudent";
+    }
+
+    service.updateStudent(studentDetail);
+    // ①新規受講生情報を登録する処理を実装する。
+    // 　→ 登録された受講生情報が、結果としてstudentListとして検索画面に出てくるように実装する。
+    // ②コース情報も一緒に登録できるように実装する。登録するコース情報は１つで良い。
+
+    return "redirect:/studentList";
   }
 }

@@ -7,14 +7,14 @@ import lombok.Setter;
 @Setter
 public class Student {
 
-  private int studentId;
+  private String studentId;
   private String name;
   private String ruby;
   private String nickname;
   private String email;
   private String address;
   private String phone;
-  private int age;
+  private String age;
   private String gender;
 
   // 以下の2項目をDBへ追加する。
