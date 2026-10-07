@@ -9,17 +9,17 @@
 <table border="1">
   <thead>
   <tr>
-    <th>studentId</th>
-    <th>name</th>
-    <th>ruby</th>
-    <th>nickname</th>
-    <th>email</th>
-    <th>address</th>
-    <th>phone</th>
-    <th>age</th>
-    <th>gender</th>
-    <th>remark</th>
-    <th>isDeleted</th>
+    <th>受講生ID</th>
+    <th>名前</th>
+    <th>ふりがな</th>
+    <th>ニックネーム</th>
+    <th>e-mail</th>
+    <th>住所</th>
+    <th>Phone</th>
+    <th>年齢</th>
+    <th>性別</th>
+    <th>備考</th>
+    <th>キャンセル</th>
   </tr>
   </thead>
   <tbody>
@@ -37,7 +37,9 @@
     <td th:text="${studentDetail.student.age}">37</td>
     <td th:text="${studentDetail.student.gender}">male</td>
     <td th:text="${studentDetail.student.remark}">会社員</td>
-    <td th:text="${studentDetail.student.isDeleted}">NULL</td>
+    <td>
+      <input type="checkbox" th:checked="${studentDetail.student.deleted}" />
+    </td>
   </tr>
   </tbody>
 </table>
