@@ -52,7 +52,7 @@ public interface StudentRepository {
 
   @Update(
       "UPDATE students SET name=#{name}, ruby=#{ruby}, nickname=#{nickname}, email=#{email}, address=#{address}, "
-          + "phone=#{phone}, age=#{age}, gender=#{gender}, remark=#{remark}, is_deleted=#{isDeleted} WHERE student_id=#{studentId}")
+          + "phone=#{phone}, age=#{age}, gender=#{gender}, remark=#{remark}, is_deleted=#{deleted} WHERE student_id=#{studentId}")
   void updateStudent(Student student);
 
   @Update("UPDATE students_courses SET course_name=#{courseName} WHERE course_id=#{courseId}")
