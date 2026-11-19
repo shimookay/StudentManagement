@@ -19,78 +19,57 @@ import raisetech.StudentManagement.data.StudentCourses;
 import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.service.StudentService;
 
+/**
+ * 受講生の検索・登録・更新などを行うREST APIとして受け付けるController
+ */
 @RestController
 public class StudentController {
 
+  /** 受講生サービス */
   private StudentService service;
-  private StudentConverter converter;
 
+  /**
+   * コンストラクタ
+   * @param service   受講生サービス
+   */
   @Autowired
-  public StudentController(StudentService service, StudentConverter converter) {
+  public StudentController(StudentService service) {
     this.service = service;
-    this.converter = converter;
   }
 
+  /**
+   * 受講生一覧検索
+   * 全件検索を行うので、条件検索は行わない
+   *
+   * @return 受講生一覧（全件）
+   */
   @GetMapping("/studentList")
   public List<StudentDetail> getStudentList() {
-//public String getStudentList(Model model) {
-      // リクエストの加工処理、入力チェック等
-    List<Student> students = service.searchStudentList();
-    List<StudentCourses> studentCourses = service.searchStudentsCoursesList();
-
-    //// テンプレートエンジンの中に書かれている変数(?)の名前
-    //model.addAttribute("studentList", converter.convertStudentDetails(students, studentCourses));
-    //// テンプレートエンジンのファイル名
-    //return "studentList";
-    return converter.convertStudentDetails(students, studentCourses);
+    return service.searchStudentList();
   }
 
 
+  /**
+   * 受講生検索
+   * studentIDに紐づく任意の受講生情報を取得
+   *
+   * @param studentId 受講生ID
+   * @return          受講生
+   */
   @GetMapping("/student/{studentId}")
-  public String getStudent(@PathVariable String studentId, Model model) {
-    StudentDetail studentDetail = service.searchStudent(studentId);
-    model.addAttribute("studentDetail", studentDetail);
-    return "updateStudent";
-  }
-
-
-  @GetMapping("/newStudent")
-  public String newStudent(Model model) {
-    StudentDetail studentDetail = new StudentDetail();
-    studentDetail.setStudentsCourses(Arrays.asList(new StudentCourses()));
-    model.addAttribute("studentDetail", studentDetail);
-    return "registerStudent";
+  public StudentDetail getStudent(@PathVariable String studentId) {
+    return service.searchStudent(studentId);
   }
 
   @PostMapping("/registerStudent")
-  public String registerStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
-    if(result.hasErrors()) {
-      return "registerStudent";
-    }
-    // System.out.println(studentDetail.getStudent().getName() + "さんが新規受講生として登録されました。");
-
-    service.registerStudent(studentDetail);
-    // ①新規受講生情報を登録する処理を実装する。
-    // 　→ 登録された受講生情報が、結果としてstudentListとして検索画面に出てくるように実装する。
-    // ②コース情報も一緒に登録できるように実装する。登録するコース情報は１つで良い。
-
-    return "redirect:/studentList";
+  public ResponseEntity<StudentDetail> registerStudent(@RequestBody StudentDetail studentDetail) {
+    StudentDetail responseStudentDetail = service.registerStudent(studentDetail);
+    return ResponseEntity.ok(responseStudentDetail);
   }
-
 
   @PostMapping("/updateStudent")
   public ResponseEntity<String> updateStudent(@RequestBody StudentDetail studentDetail) {
-//  public String updateStudent(@ModelAttribute StudentDetail studentDetail, BindingResult result) {
-//    if(result.hasErrors()) {
-//      return "updateStudent";
-//    }
-
     service.updateStudent(studentDetail);
-    // ①新規受講生情報を登録する処理を実装する。
-    // 　→ 登録された受講生情報が、結果としてstudentListとして検索画面に出てくるように実装する。
-    // ②コース情報も一緒に登録できるように実装する。登録するコース情報は１つで良い。
-
-//    return "redirect:/studentList";
     return ResponseEntity.ok("更新処理が成功しました。");
   }
 }
