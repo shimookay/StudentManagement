@@ -1,5 +1,8 @@
 package raisetech.StudentManagement.data;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,13 +11,27 @@ import lombok.Setter;
 public class Student {
 
   private String studentId;
+
+  @NotBlank
   private String name;
+
+  @NotBlank
   private String ruby;
+
+  @NotBlank
   private String nickname;
+
+  @NotBlank
+  @Email
   private String email;
+
+  @NotBlank
   private String address;
+
   private String phone;
   private String age;
+
+  @NotBlank
   private String gender;
 
   // 以下の2項目をDBへ追加する。
