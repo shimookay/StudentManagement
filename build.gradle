@@ -31,7 +31,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	// Validation (入力チェック)
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	// 既存の依存関係
+
+	// 既存の依存関係、OpenAPI Generator
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.2.1'
 
 	// 便利機能ユーティリティ： Apache Commons Lang 3.20.0
